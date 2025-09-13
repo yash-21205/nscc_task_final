@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | NSCC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #39a6b2; 
+            --primary-hover: #0d8392; 
+            --secondary-color: #ff6f61; 
+            --background-light: #eef2f7; 
+            --text-dark: #2c3e50; 
+            --text-light: #fff; 
+            --card-background: #ffffff; 
+            --border-radius: 12px; 
+            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.15); 
+            --transition-speed: 0.4s ease-out; 
+            --header-gradient: linear-gradient(90deg, #6dd5ed, #2193b0); 
+        }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: var(--background-light); color: var(--text-dark); line-height: 1.6; }
+        
+        /* Consistent Header Styles */
+        header { 
+            background: var(--header-gradient); 
+            color: var(--text-light); 
+            padding: 10px 10px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: var(--shadow-sm); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        
+        header h1 { 
+            margin: 0; 
+            font-size: 16px;
+            font-weight: 700; 
+            white-space: nowrap;
+        }
+        
+        footer { text-align: center; padding: 35px; margin-top: 60px; background: var(--text-dark); color: #ecf0f1; font-size: 15px; }
+        
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            flex-wrap: nowrap;
+            gap: 5px;
+        }
+        
+        nav a { 
+            color: var(--text-light); 
+            text-decoration: none; 
+            font-weight: 500; 
+            padding: 8px 8px;
+            border-radius: var(--border-radius); 
+            transition: all var(--transition-speed); 
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        nav a:hover { background-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        nav a.active { background-color: rgba(0, 0, 0, 0.2); font-weight: 600; }
+        main { width: 100%; }
+        .container { max-width: 800px; margin: 60px auto; padding: 50px; background: var(--card-background); border-radius: var(--border-radius); box-shadow: var(--shadow-md); }
+        button { background: var(--primary-color); color: var(--text-light); border: none; padding: 14px 28px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; font-size: 17px; transition: all var(--transition-speed); box-shadow: 0 4px 12px rgba(57, 166, 178, 0.4); width: 100%; }
+        button:hover { background: var(--primary-hover); transform: translateY(-4px); box-shadow: 0 6px 16px rgba(57, 166, 178, 0.5); }
+        .page-title { font-size: 36px; font-weight: 700; text-align: center; color: var(--text-dark); margin-top: 0; margin-bottom: 40px; }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #5a6b7d; }
+        input[type="text"], input[type="password"], input[type="email"], textarea { width: 100%; padding: 14px; border: 1px solid #d0e8f2; border-radius: var(--border-radius); font-size: 16px; font-family: 'Inter', sans-serif; box-sizing: border-box; transition: all var(--transition-speed); }
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, textarea:focus { outline: none; border-color: #39a6b2; box-shadow: 0 0 0 3px rgba(57, 166, 178, 0.2); }
+        /* Styles for the result message and QR code */
+        #result-container { text-align: center; margin-top: 30px; }
+        #result-container img { max-width: 250px; margin: 20px auto; display: block; border-radius: var(--border-radius); box-shadow: var(--shadow-sm); }
+        .message { font-size: 18px; font-weight: 500; padding: 15px; border-radius: var(--border-radius); }
+        .message.success { background-color: #d4edda; color: #155724; }
+        .message.error { background-color: #f8d7da; color: #721c24; }
+        
+        /* Media query for mobile nav bar */
+        @media (max-width: 550px) {
+            header h1 {
+                display: none;
+            }
+            nav {
+                justify-content: center;
+            }
+            nav a {
+                font-size: 11px;
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NSCC</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="previousevents.html">Previous Events</a>
+            <a href="register.html" class="active">Register</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="registration-form-container">
+                <h2 class="page-title">Register for TechNova 2025🎉</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regId">Registration ID</label>
+                        <input type="text" id="regId" name="regId" placeholder="e.g., Your College ID" required>
+                    </div>
+                    <button type="submit">Generate QR Code</button>
+                </form>
+            </div>
+            
+            <div id="result-container"></div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 NSCC CLUB. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const registerForm = document.getElementById('register-form');
+        const formContainer = document.getElementById('registration-form-container');
+        const resultContainer = document.getElementById('result-container');
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resultContainer.innerHTML = ''; // Clear previous results
+
+            const formData = new FormData(registerForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    formContainer.style.display = 'none'; // Hide the form
+                    resultContainer.innerHTML = `
+                        <div class="message success">Registration Successful!</div>
+                        <p>Please save this QR code for check-in.</p>
+                        <img src="${result.qrCode}" alt="Your QR Code">
+                    `;
+                } else {
+                    resultContainer.innerHTML = `<div class="message error">${result.message || 'An error occurred.'}</div>`;
+                }
+            } catch (error) {
+                resultContainer.innerHTML = `<div class="message error">Could not connect to the server.</div>`;
+            }
+        });
+    </script>
+
+</body>
+</html>

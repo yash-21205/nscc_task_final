@@ -1,0 +1,212 @@
+/* --- Global Styles & Resets --- */
+:root {
+  --primary-color: #00a8ff;
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --card-bg-color: rgba(20, 20, 20, 0.5);
+  --border-color: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden;
+}
+
+/* --- Video Background --- */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This is key to cover the screen without distortion */
+  filter: blur(4px) brightness(0.7); /* Optional: blur and darken video for better text contrast */
+}
+
+/* --- Header & Navigation --- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header h1 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 300;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* --- Main Content & Containers --- */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Full height minus header */
+  padding: 2rem;
+}
+
+/* --- Glassmorphism Card Style --- */
+.login-container, .dashboard-container {
+  background: var(--card-bg-color);
+  padding: 2.5rem;
+  border-radius: 15px;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px); /* For Safari */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  width: 100%;
+  text-align: center;
+}
+
+.login-container {
+  max-width: 450px;
+}
+
+.dashboard-container {
+  max-width: 1000px;
+  opacity: 0; /* Initially hidden for fade-in effect */
+  transform: scale(0.95);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.dashboard-container.visible {
+  display: block !important;
+  opacity: 1;
+  transform: scale(1);
+}
+
+h2, h3 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* --- Forms & Buttons --- */
+#adminLogin input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#adminLogin input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.3);
+}
+
+#adminLogin button, .download-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+#adminLogin button:hover, .download-btn:hover {
+  background: #007bb5;
+  transform: translateY(-2px);
+}
+
+.error-message {
+    color: #ff4d4d;
+    margin-bottom: 1rem;
+    height: 1.2em; /* Reserve space to prevent layout shift */
+    font-weight: 400;
+}
+
+
+/* --- Dashboard Table --- */
+.table-wrapper {
+  overflow-x: auto; /* For responsive tables */
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+#attendanceTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+#attendanceTable th, #attendanceTable td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#attendanceTable thead {
+  background: rgba(0, 168, 255, 0.1);
+}
+
+#attendanceTable th {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+#attendanceTable tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+#attendanceTable tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.download-btn {
+  max-width: 250px;
+  margin: 0 auto; /* Center the button */
+}

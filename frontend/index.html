@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSCC | Home</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Reset & Body Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #eef2f7; /* Light Blue-Gray */
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* ---------------- HERO ---------------- */
+        .hero {
+            position: relative;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .slideshow img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .slideshow img.active {
+            opacity: 1;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            padding: 30px 40px;
+            background: rgba(20, 20, 20, 0.55);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .hero-content h2 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #f1f1f1;
+        }
+
+        .hero-content button {
+            font-size: 18px;
+            padding: 14px 28px;
+            font-weight: 700;
+            background: #39a6b2; /* Bright Teal */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hero-content button:hover {
+            background: #0d8392; /* Darker Teal */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Consistent Header Styles */
+        header {
+            background: linear-gradient(90deg, #6dd5ed, #2193b0); /* Blue Gradient */
+            color: #fff;
+            padding: 10px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            gap: 5px;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s, transform 0.3s;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        nav a.active {
+            background-color: rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+        }
+
+        nav a:not(.active):hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px;
+            background: #fff;
+        }
+
+        .event-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 30px;
+            background: #f1f8ff; /* Lightest Blue */
+            padding: 35px;
+            border-radius: 12px;
+            margin-top: -80px;
+            margin-bottom: 60px;
+            text-align: center;
+            border: 1px solid #d0e8f2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative; 
+            z-index: 1; 
+        }
+
+        .detail-item {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .detail-item h3 {
+            color: #39a6b2; /* Bright Teal */
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .detail-item p {
+            margin-bottom: 0;
+            font-size: 17px;
+            color: #333;
+        }
+
+        /* Updated Flexbox layout for the cards */
+        .features h2 {
+            text-align: center;
+        }
+
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* Card styling */
+        .feature-card {
+            background: #fff;
+            padding: 20px;
+            flex-basis: 45%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: #39a6b2; /* Bright Teal */
+        }
+
+        .feature-card p {
+            font-size: 0.9em;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        /* Hover effect */
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        /* Media query to hide NSCC title on small screens */
+        @media (max-width: 550px) {
+            header h1 {
+                display: none;
+            }
+            nav {
+                justify-content: center;
+            }
+            nav a {
+                font-size: 11px;
+                padding: 6px 4px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .features-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .feature-card {
+                max-width: 100%;
+                flex-basis: 100%;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            background: #2c3e50; /* Dark Blue-Gray */
+            color: #ecf0f1;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NSCC</h1>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="previousevents.html">Previous Events</a>
+            <a href="register.html">Register</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="slideshow">
+                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/cd46cc144933195.Y3JvcCw4MDgsNjMyLDAsMA.jpg" class="active" alt="Slide 1">
+                <img src="https://www.conferencephotographer.com.au/wp-content/uploads/2018/06/conference-photographer-8065.jpg" alt="Slide 2">
+                <img src="https://tse4.mm.bing.net/th/id/OIP.pmHXWj8Pd8VTPDR5uZv8bAHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Slide 3">
+                <img src="https://t3.ftcdn.net/jpg/03/67/95/46/360_F_367954676_21lz3czIZXLjFYerZnuaBx5bI7ZUXxCP.jpg" alt="Slide 4">
+                <img src="https://t3.ftcdn.net/jpg/01/01/90/56/360_F_101905673_YjJHy9MLWLSq9zJco19zk8zRVsGB2ZfQ.jpg" alt="Slide 5">
+            </div>
+
+            <div class="hero-content">
+                <h2>TechNova 2025</h2>
+                <p>"Beyond Boundaries.Into the Future."</p>
+                <button onclick="window.location.href='register.html'">Register Now &rarr;</button>
+            </div>
+        </section>
+
+        <div class="container">
+            <section class="event-details">
+                <div class="detail-item">
+                    <h3>📅 Date & Time</h3>
+                    <p>Monday, 2nd December 2025<br>8:00 AM - 5:00 PM</p>
+                </div>
+                <div class="detail-item">
+                    <h3>📍 Venue</h3>
+                    <p>University Main Auditorium<br>Kattankulathur, Tamil Nadu</p>
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Why You Should Attend</h2>
+                <div class="features-grid">
+                    <div class="feature-card animate">
+                        <h3>🎤 Inspiring Speakers</h3>
+                        <p>Gain insights from global innovators who are driving the next wave of technology.</p>
+                    </div>
+                    <div class="feature-card animate">
+                        <h3>🚀 Startup Showcase</h3>
+                        <p>Discover emerging startups and their groundbreaking innovations that shape the future.</p>
+                    </div>
+                    <div class="feature-card animate">
+                        <h3>🤝 Network with Peers</h3>
+                        <p>Build meaningful connections with students, mentors, and industry leaders worldwide.</p>
+                    </div>
+                    <div class="feature-card animate">
+                        <h3>🏆 Competitions & Awards</h3>
+                        <p>Participate in exciting challenges and showcase your talent to win recognition and prizes.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 NSCC CLUB. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let slides = document.querySelectorAll('.slideshow img');
+        let index = 0;
+
+        setInterval(() => {
+            slides[index].classList.remove('active');
+            index = (index + 1) % slides.length;
+            slides[index].classList.add('active');
+        }, 5000);
+    </script>
+
+</body>
+</html>

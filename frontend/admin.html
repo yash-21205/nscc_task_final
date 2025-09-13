@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | NSCC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #39a6b2; 
+            --primary-hover: #0d8392; 
+            --secondary-color: #ff6f61; 
+            --background-light: #eef2f7; 
+            --text-dark: #2c3e50; 
+            --text-light: #fff; 
+            --card-background: #ffffff; 
+            --border-radius: 12px; 
+            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.15); 
+            --transition-speed: 0.4s ease-out; 
+            --header-gradient: linear-gradient(90deg, #6dd5ed, #2193b0);
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: var(--background-light); 
+            color: var(--text-dark); 
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Consistent Header Styles */
+        header { 
+            background: var(--header-gradient); 
+            color: var(--text-light); 
+            padding: 10px 10px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: var(--shadow-sm); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        
+        header h1 { 
+            margin: 0; 
+            font-size: 16px;
+            font-weight: 700; 
+            white-space: nowrap;
+        }
+        
+        footer { 
+            text-align: center; 
+            padding: 35px; 
+            margin-top: auto;
+            background: var(--text-dark); 
+            color: #ecf0f1; 
+            font-size: 15px; 
+        }
+        
+        nav { 
+            display: flex; 
+            justify-content: flex-end;
+            flex-grow: 1;
+            flex-wrap: nowrap;
+            gap: 5px;
+        }
+        
+        nav a { 
+            color: var(--text-light); 
+            text-decoration: none; 
+            font-weight: 500; 
+            padding: 8px 8px;
+            border-radius: var(--border-radius); 
+            transition: all var(--transition-speed); 
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        nav a:hover { background-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        nav a.active { background-color: rgba(0, 0, 0, 0.2); font-weight: 600; }
+        main { 
+            width: 100%;
+            flex-grow: 1;
+        }
+        .container { max-width: 1100px; margin: 60px auto; padding: 50px; background: var(--card-background); border-radius: var(--border-radius); box-shadow: var(--shadow-md); }
+        button { background: var(--primary-color); color: var(--text-light); border: none; padding: 14px 28px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; font-size: 17px; transition: all var(--transition-speed); box-shadow: 0 4px 12px rgba(57, 166, 178, 0.4); width: 100%; }
+        button:hover { background: var(--primary-hover); transform: translateY(-4px); box-shadow: 0 6px 16px rgba(57, 166, 178, 0.5); }
+        .page-title { font-size: 36px; font-weight: 700; text-align: center; color: var(--text-dark); margin-top: 0; margin-bottom: 40px; }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #5a6b7d; }
+        input[type="password"] { width: 100%; padding: 14px; border: 1px solid #d0e8f2; border-radius: var(--border-radius); font-size: 16px; font-family: 'Inter', sans-serif; box-sizing: border-box; transition: all var(--transition-speed); }
+        input[type="password"]:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); }
+        
+        /* --- Admin-specific styles --- */
+        #login-section { max-width: 400px; margin: 0 auto; }
+        #attendance-section { display: none; }
+        #login-feedback { text-align: center; margin-top: 15px; font-weight: 500; color: #ff6f61; }
+
+        /* Table styles */
+        #attendance-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        #attendance-table th, #attendance-table td { padding: 12px 15px; border: 1px solid #e0f2f7; text-align: left; }
+        #attendance-table thead { background-color: #f4f7fa; }
+        #attendance-table th { font-weight: 600; }
+        .status-present { color: #2ecc71; font-weight: 600; }
+        .status-absent { color: #c0392b; }
+        .row-updated { animation: highlight 1.5s ease-out; }
+        @keyframes highlight { from { background-color: #f1f8ff; } to { background-color: transparent; } }
+
+        /* Media query for mobile nav bar */
+        @media (max-width: 550px) {
+            header h1 {
+                display: none;
+            }
+            nav {
+                justify-content: center;
+            }
+            nav a {
+                font-size: 11px;
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NSCC</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="previousevents.html">Previous Events</a>
+            <a href="register.html">Register</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="admin.html" class="active">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="login-section">
+                <h2 class="page-title">Admin Login 🔐</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="password: admin123" required>
+                    </div>
+                    <button type="submit">Login</button>
+                    <div id="login-feedback"></div>
+                </form>
+            </div>
+
+            <div id="attendance-section">
+                <h2 class="page-title">Real-Time Attendance 📊</h2>
+                <a href="/api/export" download>
+                    <button style="width: auto; margin-bottom: 20px; background-color: #39a6b2;">Export to Excel</button>
+                </a>
+                <table id="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Registration ID</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 NSCC CLUB. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const loginSection = document.getElementById('login-section');
+        const attendanceSection = document.getElementById('attendance-section');
+        const loginForm = document.getElementById('login-form');
+        const loginFeedback = document.getElementById('login-feedback');
+        const attendanceBody = document.getElementById('attendance-body');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loginFeedback.textContent = '';
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password }),
+                });
+
+                if (response.ok) {
+                    // On successful login
+                    loginSection.style.display = 'none';
+                    attendanceSection.style.display = 'block';
+                    fetchAttendanceData();
+                    setupSocketListeners();
+                } else {
+                    loginFeedback.textContent = 'Incorrect password. Please try again.';
+                }
+            } catch (err) {
+                loginFeedback.textContent = 'Could not connect to the server.';
+            }
+        });
+
+        async function fetchAttendanceData() {
+            try {
+                const response = await fetch('/api/admin/attendance');
+                if (!response.ok) {
+                    // If session expires or user is not authorized, show login
+                    loginSection.style.display = 'block';
+                    attendanceSection.style.display = 'none';
+                    return;
+                }
+                const participants = await response.json();
+                populateTable(participants);
+            } catch (err) {
+                console.error('Failed to fetch attendance:', err);
+            }
+        }
+
+        function populateTable(participants) {
+            attendanceBody.innerHTML = ''; // Clear existing data
+            participants.forEach(p => {
+                const row = document.createElement('tr');
+                row.dataset.id = p.id; // Store unique ID for real-time updates
+
+                const statusClass = p.attended ? 'status-present' : 'status-absent';
+                const statusText = p.attended ? 'Present' : 'Absent';
+                const timestamp = p.timestamp ? new Date(p.timestamp).toLocaleTimeString() : 'N/A';
+
+                row.innerHTML = `
+                    <td>${p.name}</td>
+                    <td>${p.email}</td>
+                    <td>${p.regId}</td>
+                    <td class="${statusClass}">${statusText}</td>
+                    <td>${timestamp}</td>
+                `;
+                attendanceBody.appendChild(row);
+            });
+        }
+
+        function setupSocketListeners() {
+            const socket = io();
+
+            socket.on('attendanceUpdate', (updatedParticipant) => {
+                const row = attendanceBody.querySelector(`tr[data-id='${updatedParticipant.id}']`);
+                if (row) {
+                    // Update the existing row
+                    const statusCell = row.children[3];
+                    const timestampCell = row.children[4];
+
+                    statusCell.textContent = 'Present';
+                    statusCell.className = 'status-present';
+                    timestampCell.textContent = new Date(updatedParticipant.timestamp).toLocaleTimeString();
+                    
+                    row.classList.add('row-updated');
+                    setTimeout(() => row.classList.remove('row-updated'), 1500);
+                }
+                
+                // Sort table to show newly present members at the top
+                const rows = Array.from(attendanceBody.querySelectorAll('tr'));
+                rows.sort((a, b) => {
+                    const statusA = a.children[3].textContent;
+                    const statusB = b.children[3].textContent;
+                    if (statusA === 'Present' && statusB !== 'Present') return -1;
+                    if (statusA !== 'Present' && statusB === 'Present') return 1;
+                    return 0;
+                });
+                attendanceBody.append(...rows);
+            });
+        }
+    </script>
+
+</body>
+</html>

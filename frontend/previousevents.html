@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Events | NSCC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #39a6b2; 
+            --primary-hover: #0d8392; 
+            --secondary-color: #ff6f61; 
+            --background-light: #eef2f7; 
+            --text-dark: #2c3e50; 
+            --text-light: #fff; 
+            --card-background: #ffffff; 
+            --border-radius: 12px; 
+            --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.15); 
+            --transition-speed: 0.4s ease-out; 
+            --header-gradient: linear-gradient(90deg, #6dd5ed, #2193b0);
+        }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: var(--background-light); color: var(--text-dark); line-height: 1.6; }
+        
+        /* Consistent Header Styles */
+        header { 
+            background: var(--header-gradient); 
+            color: var(--text-light); 
+            padding: 10px 10px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: var(--shadow-sm); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        
+        header h1 { 
+            margin: 0; 
+            font-size: 16px;
+            font-weight: 700; 
+            white-space: nowrap;
+        }
+        
+        footer { text-align: center; padding: 35px; margin-top: 60px; background: var(--text-dark); color: #ecf0f1; font-size: 15px; }
+        
+        nav { 
+            display: flex; 
+            justify-content: flex-end;
+            flex-grow: 1;
+            flex-wrap: nowrap;
+            gap: 5px;
+        }
+        
+        nav a { 
+            color: var(--text-light); 
+            text-decoration: none; 
+            font-weight: 500; 
+            padding: 8px 8px;
+            border-radius: var(--border-radius); 
+            transition: all var(--transition-speed); 
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        nav a:hover { background-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        nav a.active { background-color: rgba(0, 0, 0, 0.2); font-weight: 600; }
+        main { width: 100%; }
+        .container { max-width: 1100px; margin: 60px auto; padding: 50px; background: var(--card-background); border-radius: var(--border-radius); box-shadow: var(--shadow-md); }
+        .page-title { font-size: 36px; font-weight: 700; text-align: center; color: var(--text-dark); margin-top: 0; margin-bottom: 40px; }
+        /* New Card Styles */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .event-card { background: #fff; border-radius: var(--border-radius); box-shadow: var(--shadow-sm); overflow: hidden; transition: all var(--transition-speed); border: 1px solid #e0f2f7; }
+        .event-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+        .event-card img { width: 100%; height: 200px; object-fit: cover; }
+        .event-card-content { padding: 25px; }
+        .event-card h3 { margin-top: 0; font-size: 22px; color: var(--text-dark); }
+        .event-card p { color: #5a6b7d; margin-bottom: 0; }
+        .event-card span.date { display: block; font-weight: 600; color: #39a6b2; margin-top: 15px; }
+        
+        /* Media query to hide NSCC title on small screens */
+        @media (max-width: 550px) {
+            header h1 {
+                display: none;
+            }
+            nav {
+                justify-content: center;
+            }
+            nav a {
+                font-size: 11px;
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NSCC</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="previousevents.html" class="active">Previous Events</a>
+            <a href="register.html">Register</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2 class="page-title">Tech Nova's Previous Events 🎉</h2>
+            <div class="card-grid">
+                <div class="event-card">
+                    <img src="https://tse2.mm.bing.net/th/id/OIP.tdKkljf-yzxJ8zdNEJjWOQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Event photo 1">
+                    <div class="event-card-content">
+                        <h3>FutureTech Conference 2024</h3>
+                        <p>Exploring the latest advancements in AI, robotics, and sustainable technology.</p>
+                        <span class="date">October 12, 2024</span>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://tse4.mm.bing.net/th/id/OIP.fyTpXLpyegFIoUjlat6clgHaEo?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Event photo 2">
+                    <div class="event-card-content">
+                        <h3>Annual Code-a-thon Challenge</h3>
+                        <p>A 24-hour coding competition with a focus on web development and cybersecurity.</p>
+                        <span class="date">September 23, 2024</span>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://www.newbook.cloud/wp-content/uploads/2023/11/DSCF4475.webp" alt="Event photo 3">
+                    <div class="event-card-content">
+                        <h3>Innovators' Summit 2023</h3>
+                        <p>A gathering of leading minds to discuss innovation in business and technology.</p>
+                        <span class="date">November 5, 2023</span>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.nbH0K8OxoNkTIT2s0bSZlwHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Event photo 4">
+                    <div class="event-card-content">
+                        <h3>Digital Marketing Essentials</h3>
+                        <p>A seminar on the latest trends in digital marketing and online brand building.</p>
+                        <span class="date">August 10, 2023</span>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://cdn.imweb.me/upload/S201912284cc92f6fb4cb7/0fbd77fd1a840.jpg" alt="Event photo 5">
+                    <div class="event-card-content">
+                        <h3>Data Science Workshop</h3>
+                        <p>An interactive workshop on machine learning models and data visualization.</p>
+                        <span class="date">April 25, 2022</span>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://th.bing.com/th/id/OIP.3tSyPwDe3Sa2-13D8OJ-pAAAAA?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Event photo 6">
+                    <div class="event-card-content">
+                        <h3>Startup Pitch Competition</h3>
+                        <p>Our annual competition showcasing the best student startup ideas and ventures.</p>
+                        <span class="date">January 14, 2022</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 NSCC CLUB. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
